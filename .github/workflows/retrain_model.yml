@@ -18,7 +18,7 @@ jobs:
           pip install -r requirements.txt
       - name: Run retrain script
         run: |
-          python scripts/retrain.py
+          python scripts/data_preprocessing.py
             - name: Lightstep Pre-Deploy Check
   # You may pin to the exact commit or the version.
   # uses: lightstep/lightstep-action-predeploy@22bec553a6d0fb3de5026acb1159085601f76408
