@@ -1,0 +1,40 @@
+# .github/workflows/retrain_model.yml
+
+name: Retrain Model
+
+on:
+  push:
+    paths:
+      - 'data/**'  # Triggers only when files in the 'data/' directory are updated
+
+jobs:
+  retrain:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+      
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install scikit-learn joblib pandas  # Ensure these dependencies are listed in requirements.txt
+      
+      - name: Run retrain script
+        run: |
+          python scripts/retrain.py  # Path to your retraining script
+
+      - name: Commit and push updated model
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add models/churn_model.pkl models/scaler.pkl
+          git commit -m "Updated model after retraining"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Token for authentication
