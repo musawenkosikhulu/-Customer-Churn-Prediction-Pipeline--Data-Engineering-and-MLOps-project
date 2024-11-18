@@ -43,7 +43,19 @@ model.fit(X_train, y_train)
 
 # Save model to Google Drive
 import joblib
-joblib.dump(model, '/churn_model.pkl')
+joblib.dump(model, 'models/churn_model.pkl')
+
+# Make predictions
+y_pred = model.predict(X_test)
+
+# Calculate metrics
+accuracy = accuracy_score(y_test, y_pred)
+precision = precision_score(y_test, y_pred, pos_label='Yes')
+recall = recall_score(y_test, y_pred, pos_label='Yes')
+f1 = f1_score(y_test, y_pred, pos_label='Yes')
+
+print(f"Accuracy: {accuracy:.2f}, Precision: {precision:.2f}, Recall: {recall:.2f}, F1 Score: {f1:.2f}")
+
 
 # Label encode binary columns
 le = LabelEncoder()
