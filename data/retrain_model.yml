@@ -1,40 +1,23 @@
-# .github/workflows/retrain_model.yml
+import mlflow
+import mlflow.sklearn
 
-name: Retrain Model
+# Start a new run
+with mlflow.start_run():
+    mlflow.log_param("model_type", "RandomForest")
+    mlflow.log_metric("accuracy", accuracy)
+    mlflow.log_metric("precision", precision)
+    mlflow.log_metric("recall", recall)
+    mlflow.log_metric("f1_score", f1)
 
-on:
-  push:
-    paths:
-      - 'data/**'  # Triggers only when files in the 'data/' directory are updated
-
-jobs:
-  retrain:
-    runs-on: ubuntu-latest
+    # Log model
+    mlflow.sklearn.log_model(model, "random_forest_model")
     
-    steps:
-      - name: Check out the repository
-        uses: actions/checkout@v2
+def predict_churn(customer_data):
+    # Load the model
+    model = joblib.load('/models/')
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.8'
-      
-      - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
-          pip install scikit-learn joblib pandas  # Ensure these dependencies are listed in requirements.txt
-      
-      - name: Run retrain script
-        run: |
-          python scripts/retrain.py  # Path to your retraining script
+    # Preprocess customer_data here (e.g., scaling, encoding)
+    customer_data = scaler.transform(customer_data)
 
-      - name: Commit and push updated model
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          git add models/churn_model.pkl models/scaler.pkl
-          git commit -m "Updated model after retraining"
-          git push
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Token for authentication
+    # Predict churn
+    return model.predict(customer_data)
