@@ -2,7 +2,7 @@ name: Retrain Model
 on:
   push:
     paths:
-      - 'data/new_data.csv'
+      - 'data/WA_Fn-UseC_-Telco-Customer-Churn.csv'
 jobs:
   retrain:
     runs-on: ubuntu-latest
