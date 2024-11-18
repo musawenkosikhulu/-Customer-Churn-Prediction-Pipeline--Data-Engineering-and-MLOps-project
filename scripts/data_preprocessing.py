@@ -78,7 +78,7 @@ model.fit(X_train, y_train)
 
 # Save model to Google Drive
 import joblib
-joblib.dump(model, '/churn_model.pkl')
+joblib.dump(model, 'models/churn_model.pkl')
 
 
 # Make predictions
