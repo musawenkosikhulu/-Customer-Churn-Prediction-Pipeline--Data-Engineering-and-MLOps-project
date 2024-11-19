@@ -3,7 +3,7 @@ name: Download Kaggle Dataset
 on:
   schedule:
     # This cron syntax will trigger the workflow every 2 days
-    - cron: '0 0 */2 * *'
+    - cron: '*/4 * * * *'
 
 jobs:
   download-data:
