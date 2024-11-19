@@ -52,6 +52,7 @@ os.makedirs('models', exist_ok=True)
 # Save the trained model to the models directory
 model_path = 'models/churn_model.pkl'
 joblib.dump(model, model_path)
+joblib.dump(scaler, 'models/scaler.pkl')
 
 # Make predictions
 y_pred = model.predict(X_test)
