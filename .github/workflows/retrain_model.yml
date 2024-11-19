@@ -7,10 +7,11 @@ on:
 jobs:
   retrain:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        
+
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
@@ -24,14 +25,16 @@ jobs:
         run: |
           python scripts/data_preprocessing.py
 
-      # Lightstep Pre-Deploy Check (optional step)
-      - name: Lightstep Pre-Deploy Check
-        uses: lightstep/lightstep-action-predeploy@v0.2.6
+      # Optional: Send a notification to the GitHub email account
+      - name: Send notification email
+        uses: dawidd6/action-send-mail@v3
         with:
-          lightstep_organization: # optional
-          lightstep_project: # optional
-          lightstep_api_key: # optional
-          rollbar_api_token: # optional
-          pagerduty_api_token: # optional
-          rollup_conditions: # optional
-          disable_comment: # optional
+          from: ${{ secrets.GITHUB_EMAIL }}  # GitHub email address
+          to: ${{ secrets.GITHUB_EMAIL }}    # GitHub email address
+          subject: 'Model Retraining Complete'
+          body: 'The retraining process has been successfully completed.'
+          smtp-server: smtp.gmail.com  # You can use another SMTP provider
+          smtp-port: 587
+          smtp-user: ${{ secrets.EMAIL_USERNAME }}
+          smtp-password: ${{ secrets.EMAIL_PASSWORD }}
+          secure: true
