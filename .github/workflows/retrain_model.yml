@@ -2,12 +2,11 @@ name: Retrain Model
 on:
   push:
     paths:
-      - 'data/WA_Fn-UseC_-Telco-Customer-Churn.csv'
+      - 'data/WA_Fn-UseC_-Telco-Customer-Churn.csv'  # Trigger retraining when this file changes
 
 jobs:
   retrain:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -25,16 +24,24 @@ jobs:
         run: |
           python scripts/data_preprocessing.py
 
-      # Optional: Send a notification to the GitHub email account
-      - name: Send notification email
+      # Send email notification when retraining is complete
+      - name: Send email notification
         uses: dawidd6/action-send-mail@v3
         with:
-          from: ${{ secrets.GITHUB_EMAIL }}  # GitHub email address
-          to: ${{ secrets.GITHUB_EMAIL }}    # GitHub email address
+          from: ${{ secrets.GITHUB_EMAIL }}  # Use GitHub Secrets for sensitive data
+          to: ${{ secrets.GITHUB_EMAIL }}
           subject: 'Model Retraining Complete'
-          body: 'The retraining process has been successfully completed.'
-          smtp-server: smtp.gmail.com  # You can use another SMTP provider
+          body: 'The model retraining process has been successfully completed. Check the logs for details.'
+          smtp-server: smtp.gmail.com  # Can be changed to other SMTP servers
           smtp-port: 587
           smtp-user: ${{ secrets.EMAIL_USERNAME }}
           smtp-password: ${{ secrets.EMAIL_PASSWORD }}
           secure: true
+
+      # Send Telegram notification
+      - name: Send Telegram notification
+        run: |
+          curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+          -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
+          -d "text=Model retraining completed successfully. Check the logs for more information."
+
