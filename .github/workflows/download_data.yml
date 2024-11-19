@@ -2,7 +2,7 @@ name: Download Kaggle Dataset
 
 on:
   schedule:
-    # This cron syntax will trigger the workflow every 2 days
+    # This cron syntax will trigger the workflow every minute (for testing)
     - cron: '* * * * *'
 
 jobs:
@@ -10,21 +10,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout the code
       - name: Checkout code
         uses: actions/checkout@v2
 
+      # Step 2: Set up Python
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: '3.8'
 
+      # Step 3: Install dependencies (preferably from requirements.txt)
       - name: Install dependencies
         run: |
-          pip install kaggle
+          pip install -r requirements.txt  # Ensure kaggle and any other dependencies are in requirements.txt
 
+      # Step 4: Run the Kaggle dataset download script
       - name: Download Kaggle Dataset
         run: |
-          python notebooks/Data_Ingestion.py  
+          python notebooks/Data_Ingestion.py  # Ensure this path is correct
         env:
           KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
           KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
