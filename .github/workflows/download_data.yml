@@ -1,0 +1,30 @@
+name: Download Kaggle Dataset
+
+on:
+  schedule:
+    # This cron syntax will trigger the workflow every 2 days
+    - cron: '0 0 */2 * *'
+
+jobs:
+  download-data:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+
+      - name: Install dependencies
+        run: |
+          pip install kaggle
+
+      - name: Download Kaggle Dataset
+        run: |
+          python /notebooks/Data_Ingestion.py  
+        env:
+          KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
+          KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
