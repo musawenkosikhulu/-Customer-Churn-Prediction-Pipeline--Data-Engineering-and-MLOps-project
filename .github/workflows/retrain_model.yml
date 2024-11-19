@@ -28,8 +28,8 @@ jobs:
       - name: Send email notification
         uses: dawidd6/action-send-mail@v3
         with:
-          from: ${{ secrets.GITHUB_EMAIL }}  # Use GitHub Secrets for sensitive data
-          to: ${{ secrets.GITHUB_EMAIL }}
+          from: ${{ secrets.EMAIL_GITACTION }}  # Use GitHub Secrets for sensitive data
+          to: ${{ secrets.EMAIL_GITACTION }}
           subject: 'Model Retraining Complete'
           body: 'The model retraining process has been successfully completed. Check the logs for details.'
           smtp-server: smtp.gmail.com  # Can be changed to other SMTP servers
