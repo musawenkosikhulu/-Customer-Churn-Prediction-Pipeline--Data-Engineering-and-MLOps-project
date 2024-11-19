@@ -24,7 +24,7 @@ jobs:
 
       - name: Download Kaggle Dataset
         run: |
-          python /notebooks/Data_Ingestion.py  
+          python notebooks/Data_Ingestion.py  
         env:
           KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
           KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
